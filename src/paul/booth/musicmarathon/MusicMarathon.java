@@ -19,7 +19,7 @@ public class MusicMarathon extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        musicMarathonView = (MusicMarathonView) findViewById(R.id.fingerRunner);
+        musicMarathonView = (MusicMarathonView) findViewById(R.id.musicMarathon);
         musicMarathonThread = musicMarathonView.getThread();
         
         musicMarathonView.setTextView((TextView) findViewById(R.id.text));
