@@ -2,17 +2,17 @@ package paul.booth.musicmarathon;
 
 import java.util.List;
 
-import com.echonest.api.v4.EchoNestAPI;
-import com.echonest.api.v4.EchoNestException;
-import com.echonest.api.v4.Params;
-import com.echonest.api.v4.Song;
-import com.echonest.api.v4.SongParams;
-
-import paul.booth.musicmarathon.R;
 import paul.booth.musicmarathon.MusicMarathonView.MusicMarathonGestureListener.MusicMarathonThread;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.echonest.api.v4.EchoNestAPI;
+import com.echonest.api.v4.EchoNestException;
+import com.echonest.api.v4.Song;
+import com.echonest.api.v4.SongParams;
 
 public class MusicMarathon extends Activity {	
 	
@@ -29,6 +29,9 @@ public class MusicMarathon extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);  
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);  
         setContentView(R.layout.main);
         
         musicMarathonView = (MusicMarathonView) findViewById(R.id.musicMarathon);

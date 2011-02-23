@@ -7,7 +7,7 @@
 
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
-		<TextView android:id="@+id/text" android:text="@string/fingerrunner_layout_text_text"
+		<TextView android:id="@+id/text" android:text="@string/musicmarathon_layout_text_text"
 			android:visibility="visible" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:layout_centerInParent="true"
 			android:gravity="center_horizontal" android:textColor="#88ffffff"
