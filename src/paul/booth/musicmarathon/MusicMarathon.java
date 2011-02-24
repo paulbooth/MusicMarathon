@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
-import com.echonest.api.v4.Params;
 import com.echonest.api.v4.Song;
 import com.echonest.api.v4.SongParams;
 import com.echonest.api.v4.Track;
@@ -30,8 +29,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+
+import android.content.res.Configuration;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class MusicMarathon extends Activity {	
 	
@@ -53,12 +57,10 @@ public class MusicMarathon extends Activity {
     Thread musicGettingThread;
 
     
-//    MediaPlayer mp;
 	
 	Handler handler = new Handler() {
 		public void handleMessage(Message m) {
 			if (m.what == NEW_SONG_URL) {
-//				setNewSong(m.getData().getString("url"));
 				try {
 					currentSong = new JSONObject(m.getData().getString("song"));
 					currentSongURL = m.getData().getString("url");
@@ -76,6 +78,9 @@ public class MusicMarathon extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);  
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);  
         setContentView(R.layout.main);
         
         musicMarathonView = (MusicMarathonView) findViewById(R.id.musicMarathon);
@@ -84,8 +89,7 @@ public class MusicMarathon extends Activity {
         musicMarathonView.setTextView((TextView) findViewById(R.id.text));
         
         
-        echoNest = new EchoNestAPI(API_KEY);
-        
+        echoNest = new EchoNestAPI(API_KEY);        
         
         musicPlayingThread = new Thread(new Runnable() {
 			MediaPlayer mp = new MediaPlayer();
@@ -184,21 +188,9 @@ public class MusicMarathon extends Activity {
 
     }
     
-//    private void setNewSong(String url) {
-//    	mp.reset();
-//    	try {
-//			mp.setDataSource(url);
-//	    	mp.prepare();
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalStateException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	mp.start();
-//    }    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      /*setContentView(R.layout.myLayout);*/
+    }
 }
