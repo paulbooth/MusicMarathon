@@ -93,7 +93,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 		Log.i("musicmarathon","I have been touched at:"+me.getX()+":"+me.getY());
 
 		if ( (lastTouchX != Double.NaN) && ((me.getX() < middleX) == (lastTouchX < middleX)) ){
-			runnerSpeed += (me.getY() - lastTouchY) * DISTTOACC;
+			runnerSpeed -= (me.getY() - lastTouchY) * DISTTOACC;
 //			if (me.getY() - lastTouchY != 0)
 //				statusText.setText(""+(me.getY() - lastTouchY)+"\n"+(me.getX() < middleX));
 		}
