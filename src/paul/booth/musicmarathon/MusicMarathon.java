@@ -4,6 +4,7 @@ import java.util.List;
 
 import paul.booth.musicmarathon.MusicMarathonView.MusicMarathonGestureListener.MusicMarathonThread;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,11 +41,11 @@ public class MusicMarathon extends Activity {
         musicMarathonView.setTextView((TextView) findViewById(R.id.text));
         
         
-        echoNest = new EchoNestAPI(API_KEY);
+        /*echoNest = new EchoNestAPI(API_KEY);
         firstSong = getRandomSong(echoNest);
         String s = firstSong.getAudio();
         int x = 4;
-        x +=3;
+        x +=3;*/
     }
     
     private Song getRandomSong(EchoNestAPI echoNest) {
@@ -65,5 +66,9 @@ public class MusicMarathon extends Activity {
 		return song;
     }
     
-    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      /*setContentView(R.layout.myLayout);*/
+    }
 }
