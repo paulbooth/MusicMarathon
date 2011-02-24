@@ -90,8 +90,13 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 			rightFingerX = me.getX();
 			rightFingerY = me.getY();
 		}
+<<<<<<< HEAD
+//		Log.i("musicmarathon","I have been touched at:"+me.getX()+":"+me.getY());
+		
+=======
 		Log.i("musicmarathon","I have been touched at:"+me.getX()+":"+me.getY());
 
+>>>>>>> 8dc53d1422814b1913c69cd77232ca67a3d81b2d
 		if ( (lastTouchX != Double.NaN) && ((me.getX() < middleX) == (lastTouchX < middleX)) ){
 			runnerSpeed -= (me.getY() - lastTouchY) * DISTTOACC;
 //			if (me.getY() - lastTouchY != 0)
@@ -172,7 +177,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 		public boolean onSingleTapUp(MotionEvent ev) {
 
-			Log.d("onSingleTapUp",ev.toString());
+//			Log.d("onSingleTapUp",ev.toString());
 
 			return true;
 
@@ -182,7 +187,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 		public void onShowPress(MotionEvent ev) {
 
-			Log.d("onShowPress",ev.toString());
+//			Log.d("onShowPress",ev.toString());
 
 		}
 
@@ -190,7 +195,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 		public void onLongPress(MotionEvent ev) {
 
-			Log.d("onLongPress",ev.toString());
+//			Log.d("onLongPress",ev.toString());
 
 		}
 
@@ -205,7 +210,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				rightFingerX = e2.getX();
 				rightFingerY = e2.getY();
 			}
-			Log.i("musicmarathon","left:"+leftSide+" middleX:"+middleX+" e1:"+e1.getX()+" e2:"+e2.getX()+" runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
+//			Log.i("musicmarathon","left:"+leftSide+" middleX:"+middleX+" e1:"+e1.getX()+" e2:"+e2.getX()+" runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
 			if (leftSide) {
 				if (e1.getX() < middleX && e2.getX() < middleX) {
 					runnerSpeed += distanceY/100;
@@ -227,8 +232,13 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 		@Override
 
 		public boolean onDown(MotionEvent ev) {
+<<<<<<< HEAD
+			
+//			Log.d("onDownd",ev.toString());
+=======
 
 			Log.d("onDownd",ev.toString());
+>>>>>>> 8dc53d1422814b1913c69cd77232ca67a3d81b2d
 
 			return true;
 
@@ -238,9 +248,9 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-			Log.d("d",e1.toString());
+//			Log.d("d",e1.toString());
 
-			Log.d("e2",e2.toString());
+//			Log.d("e2",e2.toString());
 
 			return true;
 		}
@@ -302,6 +312,15 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				runnerDist += runnerSpeed;
 				runnerSpeed *= .95;
 				runnerDist = (runnerDist) % maxRunnerDist;
+<<<<<<< HEAD
+//				Log.i("musicmarathon", "runnerSpeeed:"+ runnerSpeed*100 + " dist:" + runnerDist);
+			}
+			private void doDraw(Canvas canvas) {
+//				paint.setARGB(0, r, g, b)
+//				canvas.drawPaint(new Paint())
+//				
+//				Log.i("Debug","runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
+=======
 				//Log.i("musicmarathon", "runnerSpeeed:"+ runnerSpeed*100 + " dist:" + runnerDist);
 				if (isJumping) {
 					Log.i("musicmarathon","Jumptimer:"+jumpTimer);
@@ -318,6 +337,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 						Math.round( (Math.abs(2*(float)jumpTimer/MusicMarathonView.JUMPTIME - 1))*MusicMarathonView.RUNNERSIZE)
 						:MusicMarathonView.RUNNERSIZE);
 				//Log.i("Debug","runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
+>>>>>>> 8dc53d1422814b1913c69cd77232ca67a3d81b2d
 				paint.setARGB(255, 0,0, 0);
 				canvas.drawPaint(paint);
 				paint.setARGB(255, 120, 180, 0);
