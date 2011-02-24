@@ -20,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.SurfaceHolder.Callback;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MusicMarathonView extends SurfaceView implements Callback {
 	static final double DISTTOACC = .01;
@@ -52,7 +53,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 		public void onSensorChanged(SensorEvent event) {
 			//			float x = event.values[0];
 			//			float y = event.values[1];
-			float z = event.values[2]-4.9f;
+			float z = event.values[2];
 			if (Math.abs(z)>JUMPTHRESHOLD) {
 				Log.i("musicmarathon", "jumpstrength:"+z);
 				jump();
@@ -102,7 +103,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				Log.i("musicmarathon","I have been touched at:"+me.getX()+":"+me.getY());
 
 		if ( (lastTouchX != Double.NaN) && ((me.getX() < middleX) == (lastTouchX < middleX)) ){
-			runnerSpeed -= (me.getY() - lastTouchY) * DISTTOACC;
+			runnerSpeed += (me.getY() - lastTouchY) * DISTTOACC;
 			//			if (me.getY() - lastTouchY != 0)
 			//				statusText.setText(""+(me.getY() - lastTouchY)+"\n"+(me.getX() < middleX));
 		}
@@ -312,7 +313,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 			private void updateRunner() {
 				runnerDist += runnerSpeed;
 				runnerSpeed *= .95;
-				runnerDist = runnerDist % 500;
+
 				//Log.i("musicmarathon", "runnerSpeeed:"+ runnerSpeed*100 + " dist:" + runnerDist);
 				if (isJumping) {
 					Log.i("musicmarathon","Jumptimer:"+jumpTimer);
@@ -329,12 +330,12 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				int runnerSize = (isJumping? 
 						Math.round( (Math.abs(2*(float)jumpTimer/MusicMarathonView.JUMPTIME - 1))*MusicMarathonView.RUNNERSIZE)
 						:MusicMarathonView.RUNNERSIZE);
-				//Log.i("Debug","runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
+				Log.i("Debug","runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
 				paint.setARGB(255, 0,0, 0);
 				canvas.drawPaint(paint);
 				paint.setARGB(255, 120, 180, 0);
 				middleX = canvas.getWidth()/2f;
-				canvas.drawLine(middleX, 
+				canvas.drawLine(middleX,
 						0, 
 						middleX, 
 						canvas.getHeight(),
@@ -342,7 +343,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				canvas.drawCircle((float)leftFingerX, (float)leftFingerY, 20, paint);
 				canvas.drawCircle((float)rightFingerX, (float)rightFingerY, 20, paint);
 				paint.setARGB(255, 100,50,200);
-				canvas.drawCircle(middleX, (float)(runnerDist),runnerSize , paint);
+				canvas.drawCircle(middleX, (float)(runnerDist% canvas.getHeight()),runnerSize , paint);
 			}
 
 		}

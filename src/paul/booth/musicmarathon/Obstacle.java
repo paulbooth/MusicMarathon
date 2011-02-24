@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 
 public class Obstacle {
-	public int distance, x=0, height=100, width=100;
+	public int distance=100, x=50, height=100, width=100;
 	Drawable drawable;
 	ObstacleType type;
 	
@@ -25,7 +25,7 @@ public class Obstacle {
 		this.type = type;
 	}
 	public void draw(Canvas canvas, int curdist) {
-		int y = this.distance-curdist;
+		int y = this.distance;
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setARGB(0, 125, 0, 0);
