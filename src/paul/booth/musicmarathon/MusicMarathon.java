@@ -176,7 +176,7 @@ public class MusicMarathon extends Activity {
     	    			}
     	        	}
 
-    	        	}, 0, 15*1000);
+    	        	}, 0, 25*1000);
     		}
     	});
     	musicGettingThread.start();
