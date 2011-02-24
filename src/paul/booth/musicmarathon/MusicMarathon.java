@@ -45,21 +45,24 @@ public class MusicMarathon extends Activity {
     final static int NEW_SONG_URL = 0;
 
     EchoNestAPI echoNest;
-    String firstSongUrl;
-    JSONArray currentSong;
+    String currentSongURL;
+    Boolean isNewSong = false;
+    JSONObject currentSong;
     
     Thread musicPlayingThread;
     Thread musicGettingThread;
 
     
-    MediaPlayer mp;
+//    MediaPlayer mp;
 	
 	Handler handler = new Handler() {
 		public void handleMessage(Message m) {
 			if (m.what == NEW_SONG_URL) {
-				setNewSong(m.getData().getString("url"));
+//				setNewSong(m.getData().getString("url"));
 				try {
-					currentSong = new JSONArray(m.getData().getString("song"));
+					currentSong = new JSONObject(m.getData().getString("song"));
+					currentSongURL = m.getData().getString("url");
+					isNewSong = true;
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -82,16 +85,44 @@ public class MusicMarathon extends Activity {
         
         
         echoNest = new EchoNestAPI(API_KEY);
-        mp = new MediaPlayer();
         
         
         musicPlayingThread = new Thread(new Runnable() {
-
-			public void run() {
-				
-			}
-        	
-        });
+			MediaPlayer mp = new MediaPlayer();
+ 			public void run() {
+ 				while (true) {
+ 					try {
+ 	 					if (isNewSong) {
+ 	 						isNewSong = false;
+ 	 						update(currentSongURL);
+ 	 	 					Thread.sleep(10*1000); 						
+ 	 					}
+ 					}
+ 					catch (Throwable t) {
+ 						//do nothing
+ 					}
+ 				}
+	        }
+ 			
+ 			public void update(String url) {
+		    	mp.reset();
+		    	try {
+					mp.setDataSource(url);
+			    	mp.prepare();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	mp.start();
+ 			}
+		});
+		musicPlayingThread.start();
         
     	musicGettingThread = new Thread(new Runnable() {
     		public void run() {
@@ -100,39 +131,39 @@ public class MusicMarathon extends Activity {
 
     	        	public void run() {
     	    			try {
-    	    			       float songHottness;
-    	    			        String url = null;
-    	    			        Song song = null;
-    	    			        Track t;
-    	    			        String id = null;
-    	    			        
-    	    			        while (id == null) {
-    	    			        	songHottness  = (float) Math.random();
-    	    			            SongParams p = new SongParams();
-    	    			            p.setMinSongHotttnesss(songHottness);
-    	    			            p.setMinDanceability((float) 0.5);
-    	    			            p.sortBy(SongParams.SORT_SONG_HOTTTNESSS, true);
-    	    			            p.addIDSpace("7digital");
-    	    			            try {
-    	    			    			List<Song> songs = echoNest.searchSongs(p);
-    	    			    			if (songs.isEmpty()) {
-    	    			    				continue;
-    	    			    			}
-    	    			    			song = songs.get(0);
-    	    			    			t = song.getTrack("7digital");
-    	    			    			if (t == null) {
-    	    			    				continue;
-    	    			    			}
-    	    			    			id = t.getForeignID();
-    	    			    			if (id == null) {
-    	    			    				continue;
-    	    			    			}
-    	    			    			url = SevenDigitalAPI.getPreviewTrackURL(id);
-    	    			            } catch (EchoNestException e) {
-    	    			    			// TODO Auto-generated catch block
-    	    			    			e.printStackTrace();
-    	    			    		}        	
-    	    			        }
+	    			       float songHottness;
+	    			        String url = null;
+	    			        Song song = null;
+	    			        Track t;
+	    			        String id = null;
+	    			        
+	    			        while (id == null) {
+	    			        	songHottness  = (float) Math.random();
+	    			            SongParams p = new SongParams();
+	    			            p.setMinSongHotttnesss(songHottness);
+	    			            p.setMinDanceability((float) 0.5);
+	    			            p.sortBy(SongParams.SORT_SONG_HOTTTNESSS, true);
+	    			            p.addIDSpace("7digital");
+	    			            try {
+	    			    			List<Song> songs = echoNest.searchSongs(p);
+	    			    			if (songs.isEmpty()) {
+	    			    				continue;
+	    			    			}
+	    			    			song = songs.get(0);
+	    			    			t = song.getTrack("7digital");
+	    			    			if (t == null) {
+	    			    				continue;
+	    			    			}
+	    			    			id = t.getForeignID();
+	    			    			if (id == null) {
+	    			    				continue;
+	    			    			}
+	    			    			url = SevenDigitalAPI.getPreviewTrackURL(id);
+	    			            } catch (EchoNestException e) {
+	    			    			// TODO Auto-generated catch block
+	    			    			e.printStackTrace();
+	    			    		}        	
+	    			        }
     	    				Bundle bundle = new Bundle();
     	    				bundle.putString("url", url);
     	    				bundle.putString("song", song.toString());
@@ -153,21 +184,21 @@ public class MusicMarathon extends Activity {
 
     }
     
-    private void setNewSong(String url) {
-    	mp.reset();
-    	try {
-			mp.setDataSource(url);
-	    	mp.prepare();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	mp.start();
-    }    
+//    private void setNewSong(String url) {
+//    	mp.reset();
+//    	try {
+//			mp.setDataSource(url);
+//	    	mp.prepare();
+//		} catch (IllegalArgumentException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IllegalStateException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    	mp.start();
+//    }    
 }
