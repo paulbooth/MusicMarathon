@@ -2,39 +2,29 @@ package paul.booth.musicmarathon;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import paul.booth.musicmarathon.MusicMarathonView.MusicMarathonGestureListener.MusicMarathonThread;
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import com.echonest.api.v4.Song;
 import com.echonest.api.v4.SongParams;
 import com.echonest.api.v4.Track;
-
-import paul.booth.musicmarathon.R;
-import paul.booth.musicmarathon.MusicMarathonView.MusicMarathonGestureListener.MusicMarathonThread;
-import android.app.Activity;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.View;
-
-import android.content.res.Configuration;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MusicMarathon extends Activity {	
@@ -142,10 +132,11 @@ public class MusicMarathon extends Activity {
 	    			        String id = null;
 	    			        
 	    			        while (id == null) {
-	    			        	songHottness  = (float) Math.random();
+	    			        	Random random= new Random();
+	    			        	songHottness  = random.nextFloat();
 	    			            SongParams p = new SongParams();
 	    			            p.setMinSongHotttnesss(songHottness);
-	    			            p.setMinDanceability((float) 0.5);
+	    			            p.setMinDanceability(random.nextFloat()/2+.25f);
 	    			            p.sortBy(SongParams.SORT_SONG_HOTTTNESSS, true);
 	    			            p.addIDSpace("7digital");
 	    			            try {
@@ -153,7 +144,7 @@ public class MusicMarathon extends Activity {
 	    			    			if (songs.isEmpty()) {
 	    			    				continue;
 	    			    			}
-	    			    			song = songs.get(0);
+	    			    			song = songs.get(random.nextInt(songs.size()));
 	    			    			t = song.getTrack("7digital");
 	    			    			if (t == null) {
 	    			    				continue;

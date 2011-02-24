@@ -3,6 +3,7 @@ package paul.booth.musicmarathon;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,7 +20,6 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.SurfaceHolder.Callback;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MusicMarathonView extends SurfaceView implements Callback {
 	static final double DISTTOACC = .01;
@@ -39,6 +39,8 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 	private boolean isJumping = false;
 	private int jumpTimer;
+	
+	Obstacle testObstacle;
 
 	private double runnerX=0, runnerY=500;
 	
@@ -79,7 +81,10 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 		gestureDetector = new GestureDetector(context, gestureListener);
 
 		//sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
+		Drawable drawable= context.getResources().getDrawable(
+                R.drawable.icon);
+		testObstacle = new Obstacle(100);
+		testObstacle.setDrawable(drawable);
 		setFocusable(true); // make sure we get key events
 	}
 
@@ -307,7 +312,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 			private void updateRunner() {
 				runnerDist += runnerSpeed;
 				runnerSpeed *= .95;
-
+				runnerDist = runnerDist % 500;
 				//Log.i("musicmarathon", "runnerSpeeed:"+ runnerSpeed*100 + " dist:" + runnerDist);
 				if (isJumping) {
 					Log.i("musicmarathon","Jumptimer:"+jumpTimer);
@@ -337,7 +342,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				canvas.drawCircle((float)leftFingerX, (float)leftFingerY, 20, paint);
 				canvas.drawCircle((float)rightFingerX, (float)rightFingerY, 20, paint);
 				paint.setARGB(255, 100,50,200);
-				canvas.drawCircle(middleX, (float)(runnerDist*canvas.getHeight()),runnerSize , paint);
+				canvas.drawCircle(middleX, (float)(runnerDist),runnerSize , paint);
 			}
 
 		}
