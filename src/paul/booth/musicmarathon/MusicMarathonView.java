@@ -1,5 +1,7 @@
 package paul.booth.musicmarathon;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -20,7 +22,6 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.SurfaceHolder.Callback;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MusicMarathonView extends SurfaceView implements Callback {
 	static final double DISTTOACC = .01;
@@ -43,7 +44,8 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 	
 	Obstacle testObstacle;
 
-	private double runnerX=0, runnerY=500;
+	private double runnerX=0, runnerY=.6;
+	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>(10);
 	
 	private SensorEventListener accelerationListener = new SensorEventListener(){
 
@@ -84,8 +86,11 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 		//sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		Drawable drawable= context.getResources().getDrawable(
                 R.drawable.icon);
-		testObstacle = new Obstacle(100);
-		testObstacle.setDrawable(drawable);
+		for (int i=0;i<10;i++){
+		Obstacle testObstacle = new Obstacle((int)(Math.random()*4000),(int)(Math.random()*400));
+		obstacles.add(testObstacle);
+		}
+		testObstacle = new Obstacle((int)(Math.random()*4000),(int)(Math.random()*500));
 		setFocusable(true); // make sure we get key events
 	}
 
@@ -104,6 +109,7 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 
 		if ( (lastTouchX != Double.NaN) && ((me.getX() < middleX) == (lastTouchX < middleX)) ){
 			runnerSpeed += (me.getY() - lastTouchY) * DISTTOACC;
+			runnerX += (me.getX() - lastTouchX)/(getWidth()+1) * .02f;
 			//			if (me.getY() - lastTouchY != 0)
 			//				statusText.setText(""+(me.getY() - lastTouchY)+"\n"+(me.getX() < middleX));
 		}
@@ -327,12 +333,16 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				//				paint.setARGB(0, r, g, b)
 				//				canvas.drawPaint(new Paint())
 				//				
+				
 				int runnerSize = (isJumping? 
 						Math.round( (Math.abs(2*(float)jumpTimer/MusicMarathonView.JUMPTIME - 1))*MusicMarathonView.RUNNERSIZE)
 						:MusicMarathonView.RUNNERSIZE);
 				Log.i("Debug","runnerDist:"+runnerDist+" runnerSpeed:"+runnerSpeed);
 				paint.setARGB(255, 0,0, 0);
 				canvas.drawPaint(paint);
+				for (int i=0;i<10;i++){
+					canvas=obstacles.get(i).draw(canvas, (int)runnerDist, (double)runnerSize/MusicMarathonView.RUNNERSIZE);
+				}
 				paint.setARGB(255, 120, 180, 0);
 				middleX = canvas.getWidth()/2f;
 				canvas.drawLine(middleX,
@@ -343,7 +353,10 @@ public class MusicMarathonView extends SurfaceView implements Callback {
 				canvas.drawCircle((float)leftFingerX, (float)leftFingerY, 20, paint);
 				canvas.drawCircle((float)rightFingerX, (float)rightFingerY, 20, paint);
 				paint.setARGB(255, 100,50,200);
-				canvas.drawCircle(middleX, (float)(runnerDist% canvas.getHeight()),runnerSize , paint);
+				//canvas.drawCircle(middleX, (float)(runnerDist% canvas.getHeight()),runnerSize , paint);
+				canvas.drawCircle(middleX, (float)(runnerY*getHeight())-(float)runnerSpeed,MusicMarathonView.RUNNERSIZE , paint);
+
+				//canvas = testObstacle.draw(canvas, (int)runnerDist);
 			}
 
 		}
